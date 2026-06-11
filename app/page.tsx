@@ -443,10 +443,10 @@ export default function Page() {
               d="M560 8 C540 120 708 148 726 250 C752 404 394 386 390 546 C386 724 726 678 724 860 C722 1012 568 1040 560 1212"
             />
           </svg>
-          <svg className="route-svg route-svg-mobile" viewBox="0 0 54 1220" preserveAspectRatio="none" aria-hidden="true">
+          <svg className="route-svg route-svg-mobile" viewBox="0 0 360 1220" preserveAspectRatio="none" aria-hidden="true">
             <path
               data-route-path
-              d="M27 8 C18 138 38 218 27 332 C16 472 38 586 27 704 C16 846 38 964 27 1212"
+              d="M70 8 C58 138 74 238 166 318 C282 420 306 520 208 628 C88 760 76 880 190 1008 C258 1084 238 1166 190 1212"
             />
           </svg>
           <div className="route-start" data-route-start>Старт</div>

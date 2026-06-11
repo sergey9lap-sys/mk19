@@ -2444,7 +2444,7 @@ h1 {
   }
 
   .cinematic {
-    min-height: auto;
+    min-height: 100vh;
   }
 
   .cinematic-intro h2 {
@@ -2452,28 +2452,24 @@ h1 {
   }
 
   .act-stage {
-    display: grid;
-    min-height: auto;
+    display: block;
+    position: relative;
+    min-height: min(620px, 68vh);
     gap: 0;
     margin-top: 34px;
   }
 
   .act-card {
-    position: relative;
-    inset: auto;
+    position: absolute;
+    inset: 0;
     width: 100%;
-    min-height: auto;
-    margin-top: -16px;
-    padding: 24px;
-    transform: none;
-  }
-
-  .act-card:first-child {
+    min-height: min(560px, 62vh);
     margin-top: 0;
+    padding: 24px;
   }
 
   .act-card h3 {
-    margin-top: 54px;
+    margin-top: 48px;
     font-size: clamp(26px, 8vw, 34px);
   }
 
@@ -2485,8 +2481,8 @@ h1 {
     font-size: 100px;
   }
 
-  .act-card.is-mobile-active {
-    transform: translateY(-8px) scale(1.01);
+  .act-cta {
+    margin-top: 18px;
   }
 
   .route-section {
@@ -2495,7 +2491,7 @@ h1 {
 
   .route-map {
     min-height: auto;
-    padding: 18px 0 88px 54px;
+    padding: 18px 0 88px;
   }
 
   .route-svg-desktop {
@@ -2505,7 +2501,7 @@ h1 {
   .route-svg-mobile {
     display: block;
     left: 0;
-    width: 54px;
+    width: 100%;
   }
 
   .route-svg path {
@@ -2514,17 +2510,28 @@ h1 {
 
   .route-start,
   .route-finish {
-    margin-left: -54px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .route-card,
   .route-card:nth-of-type(odd),
   .route-card:nth-of-type(even) {
-    width: 100%;
+    width: min(100%, 360px);
     margin-left: 0;
-    margin-right: 0;
+    margin-right: auto;
     margin-top: 34px;
     padding: 24px;
+  }
+
+  .route-card:nth-of-type(odd) {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .route-card:nth-of-type(even) {
+    margin-left: 0;
+    margin-right: auto;
   }
 
   .route-card:first-of-type {
@@ -2538,8 +2545,10 @@ h1 {
   .route-dot,
   .route-card:nth-of-type(odd) .route-dot,
   .route-card:nth-of-type(even) .route-dot {
-    left: -25px;
+    left: 50%;
     right: auto;
+    top: -20px;
+    transform: translateX(-50%) scale(0.5);
   }
 
   .route-number {
@@ -2547,13 +2556,13 @@ h1 {
   }
 
   .route-next {
-    justify-items: start;
+    justify-items: center;
     margin-top: 46px;
-    margin-left: -54px;
+    margin-left: 0;
   }
 
   .route-next span {
-    text-align: left;
+    text-align: center;
   }
 
   .hero {
@@ -2622,7 +2631,7 @@ h1 {
 
   .dossier-card {
     min-height: auto;
-    transform: rotate(var(--rotate));
+    transform: none;
     margin-top: -18px;
     border-radius: 22px;
     padding: 32px 12px 12px;
@@ -2637,20 +2646,8 @@ h1 {
     margin-top: 0;
   }
 
-  .dossier-card.is-folder-active {
-    z-index: 6;
-    transform: translateY(-10px) scale(1.015) rotate(calc(var(--rotate) * 0.35));
-    filter: brightness(1.04);
-    box-shadow: 0 26px 58px rgba(63, 36, 42, 0.22);
-  }
-
-  .dossier-card.is-folder-muted {
-    opacity: 0.74;
-    filter: brightness(0.9);
-  }
-
   .dossier-card:hover {
-    transform: translateY(-8px) scale(1.01) rotate(calc(var(--rotate) * 0.35));
+    transform: translateY(-6px);
   }
 
   .dossier-paper {

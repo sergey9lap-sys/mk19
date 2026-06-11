@@ -138,41 +138,23 @@ export default function ClientEffects() {
     });
 
     mm.add("(max-width: 680px)", () => {
-      const mobileDossiers = gsap.utils.toArray<HTMLElement>("[data-dossier]");
-
       ScrollTrigger.batch("[data-dossier]", {
         start: "top 90%",
+        once: true,
         onEnter: (batch) => {
           gsap.fromTo(
             batch,
-            { y: 48, rotation: (index) => (index % 2 === 0 ? -1 : 1), opacity: 0 },
+            { y: 34, opacity: 0 },
             {
               y: 0,
-              rotation: (index) => (index % 2 === 0 ? -0.7 : 0.7),
               opacity: 1,
-              duration: 0.65,
-              stagger: 0.08,
+              duration: 0.72,
+              stagger: 0.1,
               ease: "power3.out",
+              overwrite: "auto",
             },
           );
         },
-      });
-
-      const setActiveDossier = (activeIndex: number) => {
-        mobileDossiers.forEach((card, index) => {
-          card.classList.toggle("is-folder-active", index === activeIndex);
-          card.classList.toggle("is-folder-muted", index < activeIndex);
-        });
-      };
-
-      mobileDossiers.forEach((card, index) => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 56%",
-          end: "bottom 42%",
-          onEnter: () => setActiveDossier(index),
-          onEnterBack: () => setActiveDossier(index),
-        });
       });
     });
 
@@ -250,7 +232,7 @@ export default function ClientEffects() {
       cinematic.to(cta, { autoAlpha: 1, y: 0, duration: 0.24, ease: "power3.out" }, ">-=0.02");
     });
 
-    mm.add("(max-width: 980px)", () => {
+    mm.add("(min-width: 681px) and (max-width: 980px)", () => {
       const mobileActs = gsap.utils.toArray<HTMLElement>("[data-act]");
 
       gsap.from(".cinematic-intro .word", {
@@ -292,6 +274,74 @@ export default function ClientEffects() {
           onEnterBack: () => setActiveAct(index),
         });
       });
+    });
+
+    mm.add("(max-width: 680px)", () => {
+      const acts = gsap.utils.toArray<HTMLElement>("[data-act]");
+      const cta = document.querySelector<HTMLElement>("[data-act-cta]");
+
+      gsap.from(".cinematic-intro .word", {
+        yPercent: 110,
+        autoAlpha: 0,
+        stagger: 0.012,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".cinematic",
+          start: "top 82%",
+        },
+      });
+
+      if (!acts.length || !cta) {
+        return;
+      }
+
+      gsap.set(acts, {
+        autoAlpha: 0,
+        y: 54,
+        scale: 0.94,
+        rotation: (index) => (index % 2 === 0 ? -1.2 : 1.2),
+      });
+      gsap.set(acts[0], { autoAlpha: 1, y: 0, scale: 1, rotation: -0.45 });
+      gsap.set(cta, { autoAlpha: 0, y: 16 });
+
+      const mobileCinematic = gsap.timeline({
+        scrollTrigger: {
+          trigger: "[data-cinematic]",
+          start: "top top",
+          end: "+=2300",
+          scrub: 0.85,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
+
+      acts.forEach((card, index) => {
+        if (index === 0) {
+          return;
+        }
+
+        const enterAt = 0.14 + (index - 1) * 0.34;
+        mobileCinematic.to(
+          card,
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            rotation: index % 2 === 0 ? -0.45 : 0.45,
+            duration: 0.28,
+            ease: "power3.out",
+          },
+          enterAt,
+        );
+        mobileCinematic.to(
+          acts[index - 1],
+          { y: -46, scale: 0.94, autoAlpha: 0.22, duration: 0.28, ease: "power3.out" },
+          enterAt + 0.08,
+        );
+      });
+
+      mobileCinematic.to(cta, { autoAlpha: 1, y: 0, duration: 0.22, ease: "power3.out" }, ">-=0.02");
     });
 
     gsap.from(".route-head .word", {
