@@ -2454,27 +2454,28 @@ h1 {
   .act-stage {
     display: block;
     position: relative;
-    min-height: min(620px, 68vh);
+    min-height: min(560px, 62vh);
     gap: 0;
-    margin-top: 34px;
+    margin-top: 30px;
   }
 
   .act-card {
     position: absolute;
     inset: 0;
     width: 100%;
-    min-height: min(560px, 62vh);
+    min-height: min(520px, 58vh);
     margin-top: 0;
-    padding: 24px;
+    padding: 22px;
   }
 
   .act-card h3 {
-    margin-top: 48px;
+    margin-top: 42px;
     font-size: clamp(26px, 8vw, 34px);
   }
 
   .act-card p {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.42;
   }
 
   .act-ghost {
@@ -2632,6 +2633,7 @@ h1 {
   .dossier-card {
     min-height: auto;
     transform: none;
+    opacity: 0;
     margin-top: -18px;
     border-radius: 22px;
     padding: 32px 12px 12px;
@@ -2647,7 +2649,7 @@ h1 {
   }
 
   .dossier-card:hover {
-    transform: translateY(-6px);
+    transform: none;
   }
 
   .dossier-paper {
@@ -2831,5 +2833,11 @@ h1 {
     opacity: 1;
     stroke-dasharray: none;
     stroke-dashoffset: 0;
+  }
+
+  .dossier-card {
+    opacity: 1;
+    filter: none;
+    transform: none;
   }
 }

@@ -138,23 +138,62 @@ export default function ClientEffects() {
     });
 
     mm.add("(max-width: 680px)", () => {
-      ScrollTrigger.batch("[data-dossier]", {
-        start: "top 90%",
-        once: true,
-        onEnter: (batch) => {
-          gsap.fromTo(
-            batch,
-            { y: 34, opacity: 0 },
+      gsap.utils.toArray<HTMLElement>("[data-dossier]").forEach((card) => {
+        const innerItems = [
+          card.querySelector(".clipboard-clip"),
+          card.querySelector(".avatar-stamp"),
+          card.querySelector(".dossier-top small"),
+          card.querySelector(".dossier-top strong"),
+          card.querySelector(".dossier-section:nth-of-type(1) span"),
+          card.querySelector(".dossier-section:nth-of-type(1) p"),
+          card.querySelector(".dossier-section:nth-of-type(2) span"),
+          card.querySelector(".dossier-section:nth-of-type(2) p"),
+          card.querySelector(".dossier-footer mark"),
+          card.querySelector(".dossier-footer i"),
+        ].filter(Boolean);
+
+        gsap.set(innerItems, { autoAlpha: 0, y: 12 });
+
+        const dossierReveal = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: "top 82%",
+            once: true,
+          },
+        });
+
+        dossierReveal
+          .fromTo(
+            card,
             {
+              autoAlpha: 0,
+              y: 56,
+              rotation: prefersReducedMotion ? 0 : 1.5,
+              scale: 0.97,
+              filter: prefersReducedMotion ? "none" : "blur(6px)",
+            },
+            {
+              autoAlpha: 1,
               y: 0,
-              opacity: 1,
-              duration: 0.72,
-              stagger: 0.1,
+              rotation: 0,
+              scale: 1,
+              filter: "blur(0px)",
+              duration: prefersReducedMotion ? 0.45 : 0.82,
               ease: "power3.out",
               overwrite: "auto",
             },
+          )
+          .to(
+            innerItems,
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: prefersReducedMotion ? 0.28 : 0.42,
+              stagger: prefersReducedMotion ? 0.03 : 0.065,
+              ease: "power2.out",
+            },
+            "-=0.26",
           );
-        },
       });
     });
 
@@ -307,11 +346,11 @@ export default function ClientEffects() {
 
       const mobileCinematic = gsap.timeline({
         scrollTrigger: {
-          trigger: "[data-cinematic]",
-          start: "top top",
-          end: "+=2300",
+          trigger: ".act-stage",
+          start: "top 18%",
+          end: "+=2100",
           scrub: 0.85,
-          pin: true,
+          pin: "[data-cinematic]",
           anticipatePin: 1,
         },
       });
@@ -321,7 +360,7 @@ export default function ClientEffects() {
           return;
         }
 
-        const enterAt = 0.14 + (index - 1) * 0.34;
+        const enterAt = 0.28 + (index - 1) * 0.34;
         mobileCinematic.to(
           card,
           {
