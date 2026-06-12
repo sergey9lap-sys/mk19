@@ -1,53 +1,86 @@
 "use client";
 
-import { type MouseEvent, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 type GetCourseWidgetProps = {
-  scriptId: string;
   widgetId: string;
   className?: string;
 };
 
-export default function GetCourseWidget({ scriptId, widgetId, className = "" }: GetCourseWidgetProps) {
-  const slotRef = useRef<HTMLDivElement>(null);
+function getWidgetUrl(widgetId: string) {
+  const params = new URLSearchParams(window.location.search);
+
+  params.set("id", widgetId);
+  params.set("ref", document.referrer);
+  params.set("loc", window.location.href);
+
+  try {
+    if (window.clrtQueryData) {
+      params.set("clrtQueryData", JSON.stringify(window.clrtQueryData));
+    }
+  } catch {}
+
+  return `https://agkedu.getcourse.ru/pl/lite/widget/widget?${params.toString()}`;
+}
+
+declare global {
+  interface Window {
+    clrtQueryData?: unknown;
+  }
+}
+
+export default function GetCourseWidget({ widgetId, className = "" }: GetCourseWidgetProps) {
+  const [widgetUrl, setWidgetUrl] = useState("");
+  const isOpen = Boolean(widgetUrl);
 
   useEffect(() => {
-    const slot = slotRef.current;
-
-    if (!slot || slot.querySelector(`#${CSS.escape(scriptId)}`)) {
+    if (!isOpen) {
       return;
     }
 
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = `https://agkedu.getcourse.ru/pl/lite/widget/script?id=${widgetId}`;
-    script.async = true;
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setWidgetUrl("");
+      }
+    };
 
-    slot.appendChild(script);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      script.remove();
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [scriptId, widgetId]);
-
-  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget) {
-      return;
-    }
-
-    const slot = slotRef.current;
-    const trigger = slot?.querySelector<HTMLElement>(
-      "button, a, input[type='button'], input[type='submit'], [role='button'], div[onclick]",
-    );
-
-    if (trigger && trigger !== document.activeElement) {
-      trigger.click();
-    }
-  };
+  }, [isOpen]);
 
   return (
-    <div className={`gc-widget-slot ${className}`} onClick={handleClick} ref={slotRef}>
-      <span className="gc-widget-label">Выбрать тариф</span>
-    </div>
+    <>
+      <button
+        className={`gc-widget-slot ${className}`}
+        onClick={() => setWidgetUrl(getWidgetUrl(widgetId))}
+        type="button"
+        aria-haspopup="dialog"
+      >
+        <span className="gc-widget-label">Выбрать тариф</span>
+      </button>
+
+      {isOpen ? (
+        <div className="gc-modal" onMouseDown={() => setWidgetUrl("")}>
+          <div
+            className="gc-modal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Оплата тарифа"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <button className="gc-modal-close" onClick={() => setWidgetUrl("")} type="button" aria-label="Закрыть">
+              ×
+            </button>
+            <iframe className="gc-modal-frame" src={widgetUrl} title="Форма оплаты тарифа" />
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 }

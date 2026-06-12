@@ -110,7 +110,6 @@ const tariffs = [
     name: "Эксперт",
     price: "1 900 Р",
     oldPrice: "3 900 Р",
-    widgetScriptId: "7883e0043ed989dc88fe453567ec7b7e16f2c8e1",
     widgetId: "1614463",
     text: "Для тех, кто хочет разобраться в теме, увидеть возможности премиальных продуктов и получить первые инструменты для внедрения.",
     accent: false,
@@ -128,7 +127,6 @@ const tariffs = [
     name: "Персональный трек",
     price: "5 900 Р",
     oldPrice: "9 900 Р",
-    widgetScriptId: "78353ad37129288189614160c7c187219310c540",
     widgetId: "1615206",
     text: "Для тех, кто хочет не просто разобраться в теме, а выстроить собственную модель продукта с обратной связью от Александры.",
     accent: false,
@@ -145,7 +143,6 @@ const tariffs = [
     name: "Масштаб с Александрой",
     price: "19 900 Р",
     oldPrice: "24 900 Р",
-    widgetScriptId: "4f88ebbf60e133f98a8aafde1e754affc305aa85",
     widgetId: "1615214",
     text: "Для тех, кто хочет выйти с готовой продуктовой линейкой и упаковкой — лично с Александрой.",
     accent: true,
@@ -501,7 +498,6 @@ export default function Page() {
               </ul>
               <GetCourseWidget
                 className={tariff.accent ? "is-light" : "is-dark"}
-                scriptId={tariff.widgetScriptId}
                 widgetId={tariff.widgetId}
               />
             </article>
