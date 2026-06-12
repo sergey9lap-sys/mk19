@@ -200,6 +200,7 @@ export default function ClientEffects() {
     mm.add("(min-width: 981px)", () => {
       const acts = gsap.utils.toArray<HTMLElement>("[data-act]");
       const cta = document.querySelector<HTMLElement>("[data-act-cta]");
+      const hint = document.querySelector<HTMLElement>("[data-scroll-hint]");
 
       if (!acts.length || !cta) {
         return;
@@ -213,6 +214,9 @@ export default function ClientEffects() {
       });
       gsap.set(acts[0], { autoAlpha: 1, y: 0, scale: 1, rotation: -0.7 });
       gsap.set(cta, { autoAlpha: 0, y: 24 });
+      if (hint) {
+        gsap.set(hint, { autoAlpha: 0, y: 8 });
+      }
 
       gsap
         .timeline({
@@ -241,6 +245,10 @@ export default function ClientEffects() {
       });
 
       cinematic.to(".cinematic-glow", { x: -90, y: -50, scale: 1.12, duration: 2.2, ease: "none" }, 0);
+      if (hint) {
+        cinematic.to(hint, { autoAlpha: 0.72, y: 0, duration: 0.12, ease: "power2.out" }, 0.05);
+        cinematic.to(hint, { autoAlpha: 0, duration: 0.16, ease: "power2.out" }, 1.08);
+      }
 
       acts.forEach((card, index) => {
         if (index === 0) {
@@ -318,6 +326,7 @@ export default function ClientEffects() {
     mm.add("(max-width: 680px)", () => {
       const acts = gsap.utils.toArray<HTMLElement>("[data-act]");
       const cta = document.querySelector<HTMLElement>("[data-act-cta]");
+      const hint = document.querySelector<HTMLElement>("[data-scroll-hint]");
 
       gsap.from(".cinematic-intro .word", {
         yPercent: 110,
@@ -343,6 +352,9 @@ export default function ClientEffects() {
       });
       gsap.set(acts[0], { autoAlpha: 1, y: 0, scale: 1, rotation: -0.45 });
       gsap.set(cta, { autoAlpha: 0, y: 16 });
+      if (hint) {
+        gsap.set(hint, { autoAlpha: 0, y: 6 });
+      }
 
       const mobileCinematic = gsap.timeline({
         scrollTrigger: {
@@ -354,6 +366,11 @@ export default function ClientEffects() {
           anticipatePin: 1,
         },
       });
+
+      if (hint) {
+        mobileCinematic.to(hint, { autoAlpha: 0.7, y: 0, duration: 0.12, ease: "power2.out" }, 0.04);
+        mobileCinematic.to(hint, { autoAlpha: 0, duration: 0.14, ease: "power2.out" }, 1.08);
+      }
 
       acts.forEach((card, index) => {
         if (index === 0) {
@@ -553,7 +570,7 @@ export default function ClientEffects() {
     );
 
     mm.add("(min-width: 981px)", () => {
-      const buttons = gsap.utils.toArray<HTMLElement>(".tariff-card .btn");
+      const buttons = gsap.utils.toArray<HTMLElement>(".tariff-card .btn, .tariff-card .gc-widget-slot");
       const cleanups: Array<() => void> = [];
 
       buttons.forEach((button) => {

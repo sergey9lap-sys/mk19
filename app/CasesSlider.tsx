@@ -25,6 +25,7 @@ export default function CasesSlider({ cases }: CasesSliderProps) {
   const prev = () => setActive((index) => (index - 1 + cases.length) % cases.length);
 
   const currentImageFailed = current.image ? failedImages.has(current.image) : true;
+  const shouldContainImage = current.image?.includes("воробьев");
 
   const markImageFailed = (image: string) => {
     setFailedImages((failed) => {
@@ -62,7 +63,12 @@ export default function CasesSlider({ cases }: CasesSliderProps) {
           >
             <div className="case-photo">
               {current.image && !currentImageFailed ? (
-                <img src={current.image} alt={current.name} onError={() => markImageFailed(current.image as string)} />
+                <img
+                  className={shouldContainImage ? "is-contain" : undefined}
+                  src={current.image}
+                  alt={current.name}
+                  onError={() => markImageFailed(current.image as string)}
+                />
               ) : (
                 <div className="case-photo-fallback" aria-hidden="true">
                   {current.name
