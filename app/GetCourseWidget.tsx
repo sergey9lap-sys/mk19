@@ -1,6 +1,6 @@
 "use client";
 
-import { type MouseEvent, useRef } from "react";
+import { type MouseEvent, useEffect, useRef } from "react";
 
 type GetCourseWidgetProps = {
   scriptId: string;
@@ -10,6 +10,25 @@ type GetCourseWidgetProps = {
 
 export default function GetCourseWidget({ scriptId, widgetId, className = "" }: GetCourseWidgetProps) {
   const slotRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const slot = slotRef.current;
+
+    if (!slot || slot.querySelector(`#${CSS.escape(scriptId)}`)) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = `https://agkedu.getcourse.ru/pl/lite/widget/script?id=${widgetId}`;
+    script.async = true;
+
+    slot.appendChild(script);
+
+    return () => {
+      script.remove();
+    };
+  }, [scriptId, widgetId]);
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) {
@@ -29,7 +48,6 @@ export default function GetCourseWidget({ scriptId, widgetId, className = "" }: 
   return (
     <div className={`gc-widget-slot ${className}`} onClick={handleClick} ref={slotRef}>
       <span className="gc-widget-label">Выбрать тариф</span>
-      <script id={scriptId} src={`https://agkedu.getcourse.ru/pl/lite/widget/script?id=${widgetId}`} async />
     </div>
   );
 }
