@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { type MouseEvent, useRef } from "react";
 
 type GetCourseWidgetProps = {
   scriptId: string;
@@ -9,28 +9,27 @@ type GetCourseWidgetProps = {
 };
 
 export default function GetCourseWidget({ scriptId, widgetId, className = "" }: GetCourseWidgetProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const slotRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const container = containerRef.current;
-
-    if (!container) {
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) {
       return;
     }
 
-    container.replaceChildren();
+    const slot = slotRef.current;
+    const trigger = slot?.querySelector<HTMLElement>(
+      "button, a, input[type='button'], input[type='submit'], [role='button'], div[onclick]",
+    );
 
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = `https://agkedu.getcourse.ru/pl/lite/widget/script?id=${widgetId}`;
-    script.async = true;
+    if (trigger && trigger !== document.activeElement) {
+      trigger.click();
+    }
+  };
 
-    container.appendChild(script);
-
-    return () => {
-      container.replaceChildren();
-    };
-  }, [scriptId, widgetId]);
-
-  return <div className={`gc-widget-slot ${className}`} ref={containerRef} />;
+  return (
+    <div className={`gc-widget-slot ${className}`} onClick={handleClick} ref={slotRef}>
+      <span className="gc-widget-label">Выбрать тариф</span>
+      <script id={scriptId} src={`https://agkedu.getcourse.ru/pl/lite/widget/script?id=${widgetId}`} async />
+    </div>
+  );
 }
