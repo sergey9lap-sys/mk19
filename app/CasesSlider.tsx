@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export type CaseItem = {
   name: string;
@@ -23,11 +23,6 @@ export default function CasesSlider({ cases }: CasesSliderProps) {
 
   const next = () => setActive((index) => (index + 1) % cases.length);
   const prev = () => setActive((index) => (index - 1 + cases.length) % cases.length);
-
-  useEffect(() => {
-    const timer = window.setInterval(next, 9000);
-    return () => window.clearInterval(timer);
-  }, [cases.length]);
 
   const currentImageFailed = current.image ? failedImages.has(current.image) : true;
 

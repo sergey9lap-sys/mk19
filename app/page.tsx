@@ -40,7 +40,7 @@ const audience = [
     symptom: "Хочется выстроить стабильный поток клиентов на высокие чеки без ежедневной гонки.",
   },
   {
-    type: "Офлайн-практик",
+    type: "Офлайн-предприниматель",
     initials: "ОП",
     avatarPosition: "100% 100%",
     profile: "Выходите из офлайна в онлайн и хотите сразу строить сильную линейку.",
@@ -91,13 +91,6 @@ const path = [
     date: "18–29 июня",
     title: "Экспертный движ",
     badges: ["5 практических заданий", "закрытый чат", "поддержка участников"],
-    tasks: [
-      "практическое задание 1",
-      "практическое задание 2",
-      "практическое задание 3",
-      "практическое задание 4",
-      "практическое задание 5",
-    ],
     text: "Вы будете выполнять задания шаг за шагом, внедрять инструменты в свой проект и получать первые результаты уже во время прохождения.",
   },
   {
@@ -125,7 +118,7 @@ const tariffs = [
       "Общий чат участников мастер-класса",
       "Разборы вопросов из чата в прямом эфире",
       "Вебинар в записи «Самозапуск 2026: дорожная карта запуска от продукта до продажи»",
-      "Файл-подарок «Премиальная упаковка образовательного продукта»",
+      "🎁 Файл-подарок «Премиальная упаковка образовательного продукта»",
     ],
   },
   {
@@ -133,9 +126,9 @@ const tariffs = [
     price: "5 900 Р",
     oldPrice: "9 900 Р",
     text: "Для тех, кто хочет не просто разобраться в теме, а выстроить собственную модель продукта с обратной связью от Александры.",
-    accent: true,
+    accent: false,
     includes: [
-      "Всё, что входит в тариф «Эксперт»",
+      "Всё, что входит в тариф «Эксперт» +",
       "Личный разбор вашего кейса в прямом эфире по предварительно заполненной анкете",
       "Рабочая тетрадь по распаковке премиальной программы",
       "Файл «Анатомия продающего вебинара: 50 механик, которые удерживают внимание и помогают продавать»",
@@ -148,14 +141,12 @@ const tariffs = [
     price: "19 900 Р",
     oldPrice: "24 900 Р",
     text: "Для тех, кто хочет выйти с готовой продуктовой линейкой и упаковкой — лично с Александрой.",
-    accent: false,
+    accent: true,
     hot: true,
     includes: [
-      "Всё из тарифов «Эксперт» и «Персональный трек»",
+      "Всё из тарифов «Эксперт» и «Персональный трек» +",
       "Личная сессия с Александрой под ваш запрос",
       "Упаковка вашего портфолио + примеры выполнения",
-      "Цена 19 900 Р действует на вебинаре и 24 часа после вебинара",
-      "После этого стоимость вернётся к 24 900 Р",
     ],
   },
 ];
@@ -270,7 +261,7 @@ const cases = [
     name: "Константин Воробьев",
     role: "Тренер по плаванию, основатель сети клубов по обучению взрослых плаванию",
     result: "На запуске программы удалось заработать — 1 990 000 Р",
-    image: "/cases/case-10.jpg",
+    image: "/воробьев.jpg",
     points: [
       "Разработан курс «Сила Воды» по обучению взрослых плаванию через ОНЛАЙН на 2 месяца обучения",
       "Проведен тестовый запуск с  фокус-группой",
@@ -314,7 +305,6 @@ export default function Page() {
         <div className="hero-copy">
           <div className="eyebrow hero-eyebrow" data-reveal>
             <span>Онлайн-мастер-класс</span>
-            <strong>18 июня · 16:00 мск</strong>
           </div>
           <h1 data-split>
             Методология создания и запуска<br />
@@ -326,9 +316,6 @@ export default function Page() {
             Охваты падают. Запуски приносят меньше результатов. Как не потерять
             выручку и продолжить расти?
           </p>
-          <div className="hero-actions">
-            <MotionCta className="btn-gold">Выбрать тариф</MotionCta>
-          </div>
           <div className="hero-dates" data-stagger>
             {["18 июня — первый эфир", "18–29 июня — челлендж", "29 июня — живые разборы"].map(
               (item) => (
@@ -337,6 +324,9 @@ export default function Page() {
                 </span>
               ),
             )}
+          </div>
+          <div className="hero-actions">
+            <MotionCta className="btn-gold">Выбрать тариф</MotionCta>
           </div>
         </div>
         <div className="hero-visual" aria-label="Фото Александры">
@@ -351,7 +341,6 @@ export default function Page() {
 
       <section className="section audience archive" id="for-whom">
         <div className="archive-head">
-          <h2 data-split>Найдите себя среди этих профилей</h2>
           <p>Если узнаёте себя хотя бы в одном досье — мастер-класс будет для вас полезен.</p>
         </div>
         <div className="archive-desk" data-archive>
@@ -405,13 +394,9 @@ export default function Page() {
         <div className="cinematic-intro">
           <span className="kicker">Зачем идти</span>
           <h2 data-split>
-            Клиенты стали осторожнее. Те, кто продолжает работать по старым схемам,
-            либо выгорают, либо топчутся на месте.
+            Рынок премиальных продуктов продолжает расти, «бутиковые продукты» также нужны аудитории,
+            но такая аудитория теперь покупает по-другому.
           </h2>
-          <p>
-            При этом рынок премиальных продуктов продолжает расти. Платёжеспособные клиенты никуда не исчезли.
-            Просто они покупают по-другому и у других.
-          </p>
         </div>
         <div className="act-stage">
           {agenda.map((item, index) => (
@@ -466,19 +451,12 @@ export default function Page() {
                     ))}
                   </div>
                 ) : null}
-                {item.tasks ? (
-                  <ul className="route-tasks">
-                    {item.tasks.map((task) => (
-                      <li key={task} data-route-task>{task}</li>
-                    ))}
-                  </ul>
-                ) : null}
                 <p>{item.text}</p>
               </div>
             </article>
           ))}
           <div className="route-next" data-route-next>
-            <span>Следующий шаг — выбрать формат участия</span>
+            <span>Финиш — выбрать формат участия</span>
             <a className="route-finish" href="#tariffs">Тарифы</a>
           </div>
         </div>
@@ -486,7 +464,7 @@ export default function Page() {
 
       <section className="section tariffs" id="tariffs">
         <div className="tariff-head" data-reveal>
-          <h2>Выберите уровень участия, который сейчас нужен вашему проекту.</h2>
+          <h2>Выберите тариф:</h2>
         </div>
         <div className="tariff-grid" data-stagger>
           {tariffs.map((tariff) => (
@@ -495,7 +473,7 @@ export default function Page() {
               key={tariff.name}
               data-item
             >
-              {tariff.hot ? <div className="burn-badge">Цена действует на эфире и 24 часа после</div> : null}
+              {tariff.hot ? <div className="burn-badge"><span aria-hidden="true">⚡</span> Цена действует на эфире 15.06 и 24 часа после</div> : null}
               <div className="tariff-top">
                 <h3>{tariff.name}</h3>
               </div>
@@ -508,7 +486,7 @@ export default function Page() {
               </div>
               <ul>
                 {tariff.includes.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li className={item.startsWith("Всё") ? "is-summary" : item.startsWith("🎁") ? "is-gift" : ""} key={item}>{item}</li>
                 ))}
               </ul>
               <MotionCta href="#tariffs" className={tariff.accent ? "btn-light" : "btn-dark"}>
@@ -529,7 +507,7 @@ export default function Page() {
 
       <section className="section host expert-section">
         <div className="host-portrait" data-host-photo>
-          <img src="/alexandra-host.jpg" alt="Александра Горева-Куртышева" />
+          <img src="/newphoto.jpg" alt="Александра Горева-Куртышева" />
         </div>
         <div className="host-copy">
           <span className="kicker">Кто ведёт</span>
