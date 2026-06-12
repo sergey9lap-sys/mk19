@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type GetCourseWidgetProps = {
   widgetId: string;
@@ -31,7 +32,12 @@ declare global {
 
 export default function GetCourseWidget({ widgetId, className = "" }: GetCourseWidgetProps) {
   const [widgetUrl, setWidgetUrl] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
   const isOpen = Boolean(widgetUrl);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) {
@@ -65,22 +71,25 @@ export default function GetCourseWidget({ widgetId, className = "" }: GetCourseW
         <span className="gc-widget-label">Выбрать тариф</span>
       </button>
 
-      {isOpen ? (
-        <div className="gc-modal" onMouseDown={() => setWidgetUrl("")}>
-          <div
-            className="gc-modal-panel"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Оплата тарифа"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <button className="gc-modal-close" onClick={() => setWidgetUrl("")} type="button" aria-label="Закрыть">
-              ×
-            </button>
-            <iframe className="gc-modal-frame" src={widgetUrl} title="Форма оплаты тарифа" />
-          </div>
-        </div>
-      ) : null}
+      {isMounted && isOpen
+        ? createPortal(
+            <div className="gc-modal" onMouseDown={() => setWidgetUrl("")}>
+              <div
+                className="gc-modal-panel"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Оплата тарифа"
+                onMouseDown={(event) => event.stopPropagation()}
+              >
+                <button className="gc-modal-close" onClick={() => setWidgetUrl("")} type="button" aria-label="Закрыть">
+                  ×
+                </button>
+                <iframe className="gc-modal-frame" src={widgetUrl} title="Форма оплаты тарифа" />
+              </div>
+            </div>,
+          document.body,
+          )
+        : null}
     </>
   );
 }
