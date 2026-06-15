@@ -20,13 +20,13 @@ type TariffsSectionProps = {
 };
 
 function BonusText({ value }: { value: string }) {
-  const amountPattern = /(5 900₽|24 900₽|🎁)/g;
+  const amountPattern = /(5 900₽|19 900₽|24 900₽|🎁)/g;
   const parts = value.split(amountPattern);
 
   return (
     <>
       {parts.map((part, index) =>
-        part === "5 900₽" || part === "24 900₽" ? (
+        part === "5 900₽" || part === "19 900₽" || part === "24 900₽" ? (
           <strong className="bonus-amount" key={`${part}-${index}`}>{part}</strong>
         ) : part === "🎁" ? (
           <span className="bonus-gift-emoji" aria-hidden="true" key={`${part}-${index}`}>{part}</span>
