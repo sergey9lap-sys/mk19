@@ -1,7 +1,7 @@
 import ClientEffects from "./ClientEffects";
 import CasesSlider from "./CasesSlider";
-import GetCourseWidget from "./GetCourseWidget";
 import MotionCta from "./MotionCta";
+import TariffsSection from "./TariffsSection";
 import type { CSSProperties } from "react";
 
 const audience = [
@@ -85,14 +85,22 @@ const path = [
     title: "Эфир",
     meta: "18:00 мск · онлайн",
     text: "Разберём методологию создания премиальных продуктов, актуальные форматы 2026 года, ценообразование, упаковку и стратегию развития.",
+    tasks: undefined,
   },
   {
     label: "Экспертный движ",
     number: "02",
     date: "18–29 июня",
     title: "Экспертный движ",
-    badges: ["5 практических заданий", "закрытый чат", "поддержка участников"],
-    text: "Вы будете выполнять задания шаг за шагом, внедрять инструменты в свой проект и получать первые результаты уже во время прохождения.",
+    text: "За 10 дней вы не просто послушаете теорию, а начнете собирать собственную продуктовую модель.",
+    tasks: [
+      "День 1 — аудит текущей продуктовой линейки",
+      "День 2 — поиск точки масштабирования",
+      "День 3 — расчет экономики нового продукта",
+      "День 4 — упаковка ценности",
+      "День 5 — проектирование продуктовой линейки",
+      "День 6–10 — внедрение и обратная связь",
+    ],
   },
   {
     label: "Живые разборы",
@@ -101,57 +109,31 @@ const path = [
     title: "Живые разборы",
     meta: "18:30 мск · онлайн",
     text: "Проведём разборы проектов участников, ответим на накопившиеся вопросы и поможем определить следующие шаги для развития.",
+    tasks: undefined,
     final: true,
   },
 ];
 
-const tariffs = [
+const transformations = [
   {
-    name: "Эксперт",
-    price: "1 900 Р",
-    oldPrice: "3 900 Р",
-    widgetId: "1614463",
-    text: "Для тех, кто хочет разобраться в теме, увидеть возможности премиальных продуктов и получить первые инструменты для внедрения.",
-    accent: false,
-    includes: [
-      "Мастер-класс. Часть 1 — 18 июня в 18:00 мск + запись эфира",
-      "Часть 2. Живые разборы — 29 июня в 18:30 мск",
-      "Экспертный движ: 5 практических заданий с 18 по 29 июня",
-      "Общий чат участников мастер-класса",
-      "Разборы вопросов из чата в прямом эфире",
-      "Вебинар в записи «Самозапуск 2026: дорожная карта запуска от продукта до продажи»",
-      "🎁 Файл-подарок «Премиальная упаковка образовательного продукта»",
-    ],
+    portrait: "Досье 01",
+    before: "Не понимаю, что запускать дальше",
+    after: "Есть конкретная модель продукта под мой опыт и компетенции",
   },
   {
-    name: "Персональный трек",
-    price: "5 900 Р",
-    oldPrice: "9 900 Р",
-    widgetId: "1615206",
-    text: "Для тех, кто хочет не просто разобраться в теме, а выстроить собственную модель продукта с обратной связью от Александры.",
-    accent: false,
-    includes: [
-      "Всё, что входит в тариф «Эксперт» +",
-      "Личный разбор вашего кейса в прямом эфире по предварительно заполненной анкете",
-      "Рабочая тетрадь по распаковке премиальной программы",
-      "Файл «Анатомия продающего вебинара: 50 механик, которые удерживают внимание и помогают продавать»",
-      "Эфир в записи «Методология прорыва. Теория Агавы»",
-      "Эфир в записи «Продуктовые воронки»",
-    ],
+    portrait: "Досье 02",
+    before: "Доход зависит от запусков и выхода в блог",
+    after: "Понимаю, как выстроить более устойчивую систему и не зависеть от охватов",
   },
   {
-    name: "Масштаб с Александрой",
-    price: "19 900 Р",
-    oldPrice: "24 900 Р",
-    widgetId: "1615214",
-    text: "Для тех, кто хочет выйти с готовой продуктовой линейкой и упаковкой — лично с Александрой.",
-    accent: true,
-    hot: true,
-    includes: [
-      "Всё из тарифов «Эксперт» и «Персональный трек» +",
-      "Личная сессия с Александрой под ваш запрос",
-      "Упаковка вашего портфолио + примеры выполнения",
-    ],
+    portrait: "Досье 03",
+    before: "Хочу работать с сильными клиентами",
+    after: "Понимаю путь перехода в более платежеспособный сегмент",
+  },
+  {
+    portrait: "Досье 04",
+    before: "Много идей, попыток внедрить новые инструменты",
+    after: "Есть понятная стратегия развития продуктовой линейки",
   },
 ];
 
@@ -288,18 +270,6 @@ const ambientQuestions = [
   "Когда старт?",
 ];
 
-function Price({ value }: { value: string }) {
-  const parts = value.split(" ");
-  const currency = parts.pop();
-  const amount = parts.join(" ");
-
-  return (
-    <>
-      {amount} <span>{currency}</span>
-    </>
-  );
-}
-
 export default function Page() {
   return (
     <main className="site-shell">
@@ -393,6 +363,34 @@ export default function Page() {
         </div>
       </section>
 
+      <section className="section transformation" aria-labelledby="transformation-title">
+        <div className="transformation-head" data-reveal>
+          <span className="kicker">После мастер-класса</span>
+          <h2 id="transformation-title" data-split>Вот что изменится после МК</h2>
+        </div>
+        <div className="transformation-grid" data-transformation-grid>
+          {transformations.map((item, index) => (
+            <article className="transformation-card" key={item.before} data-transformation-card>
+              <div className="transformation-index" data-transformation-index>
+                <small>{item.portrait}</small>
+                <b>{String(index + 1).padStart(2, "0")}</b>
+              </div>
+              <div className="change-columns">
+                <div className="change-cell is-before" data-transformation-before>
+                  <span>Было</span>
+                  <p>{item.before}</p>
+                </div>
+                <div className="change-arrow" aria-hidden="true" data-transformation-arrow>→</div>
+                <div className="change-cell is-after" data-transformation-after>
+                  <span>Стало</span>
+                  <p>{item.after}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="section why cinematic" data-cinematic>
         <div className="cinematic-glow" aria-hidden="true" />
         <div className="cinematic-intro">
@@ -451,14 +449,14 @@ export default function Page() {
                 <small>{item.date}</small>
                 <h3>{item.title}</h3>
                 {item.meta ? <strong>{item.meta}</strong> : null}
-                {item.badges ? (
-                  <div className="route-badges">
-                    {item.badges.map((badge) => (
-                      <span key={badge}>{badge}</span>
-                    ))}
-                  </div>
-                ) : null}
                 <p>{item.text}</p>
+                {item.tasks ? (
+                  <ul className="route-tasks">
+                    {item.tasks.map((task) => (
+                      <li key={task} data-route-task>{task}</li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
             </article>
           ))}
@@ -469,41 +467,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="section tariffs" id="tariffs">
-        <div className="tariff-head" data-reveal>
-          <h2>Выберите тариф:</h2>
-        </div>
-        <div className="tariff-grid" data-stagger>
-          {tariffs.map((tariff) => (
-            <article
-              className={`tariff-card ${tariff.accent ? "is-accent" : ""} ${tariff.hot ? "is-hot" : ""}`}
-              key={tariff.name}
-              data-item
-            >
-              {tariff.hot ? <div className="burn-badge"><span aria-hidden="true">⚡</span> Цена действует на эфире 15.06 и 24 часа после</div> : null}
-              <div className="tariff-top">
-                <h3>{tariff.name}</h3>
-              </div>
-              <div className="tariff-desc">
-                <p>{tariff.text}</p>
-              </div>
-              <div className="price-row">
-                <small>{tariff.oldPrice}</small>
-                <strong><Price value={tariff.price} /></strong>
-              </div>
-              <ul>
-                {tariff.includes.map((item) => (
-                  <li className={item.startsWith("Всё") ? "is-summary" : item.startsWith("🎁") ? "is-gift" : ""} key={item}>{item}</li>
-                ))}
-              </ul>
-              <GetCourseWidget
-                className={tariff.accent ? "is-light" : "is-dark"}
-                widgetId={tariff.widgetId}
-              />
-            </article>
-          ))}
-        </div>
-      </section>
+      <TariffsSection />
 
       <section className="section cases">
         <div className="cases-head" data-reveal>

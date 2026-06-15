@@ -111,6 +111,66 @@ export default function ClientEffects() {
 
     const mm = gsap.matchMedia();
 
+    const buildTransformationReveal = (card: HTMLElement, isMobile = false) => {
+      const index = card.querySelector("[data-transformation-index]");
+      const before = card.querySelector("[data-transformation-before]");
+      const arrow = card.querySelector<HTMLElement>("[data-transformation-arrow]");
+      const after = card.querySelector("[data-transformation-after]");
+      const arrowPulse = isMobile
+        ? { y: 7, x: 0, boxShadow: "0 22px 52px rgba(196, 90, 58, 0.48), 0 0 0 1px rgba(255, 248, 240, 0.16)" }
+        : { x: 8, y: 2, boxShadow: "0 22px 54px rgba(196, 90, 58, 0.5), 0 0 0 1px rgba(255, 248, 240, 0.16)" };
+
+      gsap.set(card, { autoAlpha: 0, y: 24, scale: 0.98 });
+      gsap.set([index, before, arrow, after], { autoAlpha: 0, y: 24, scale: 0.98 });
+      gsap.set(arrow, { rotation: isMobile ? 90 : 0 });
+
+      const timeline = gsap.timeline({ paused: true });
+
+      timeline
+        .to(card, { autoAlpha: 1, y: 0, scale: 1, duration: 0.58, ease: "power3.out" })
+        .to(index, { autoAlpha: 1, y: 0, scale: 1, duration: 0.48, ease: "power3.out" }, "-=0.42")
+        .to(before, { autoAlpha: 1, y: 0, scale: 1, duration: 0.52, ease: "power3.out" }, "+=0.12")
+        .to(arrow, { autoAlpha: 1, y: 0, scale: 1, duration: 0.46, ease: "power3.out" }, "+=0.12")
+        .to(arrow, { ...arrowPulse, duration: 0.18, ease: "power2.out" }, "+=0.02")
+        .to(arrow, { x: 0, y: 0, rotation: isMobile ? 90 : 0, boxShadow: "", duration: 0.32, ease: "power3.out" })
+        .to(after, { autoAlpha: 1, y: 0, scale: 1, duration: 0.56, ease: "power3.out" }, "-=0.16");
+
+      return timeline;
+    };
+
+    mm.add("(min-width: 681px)", () => {
+      const cards = gsap.utils.toArray<HTMLElement>("[data-transformation-card]");
+      const timelines = cards.map((card) => buildTransformationReveal(card));
+
+      ScrollTrigger.batch("[data-transformation-card]", {
+        start: "top 82%",
+        once: true,
+        onEnter: (batch) => {
+          batch.forEach((card, index) => {
+            const timeline = timelines[cards.indexOf(card as HTMLElement)];
+            gsap.delayedCall(index * 0.32, () => timeline?.play());
+          });
+        },
+      });
+    });
+
+    mm.add("(max-width: 680px)", () => {
+      const cards = gsap.utils.toArray<HTMLElement>("[data-transformation-card]");
+      const timelines = cards.map((card) => buildTransformationReveal(card, true));
+
+      ScrollTrigger.batch("[data-transformation-card]", {
+        start: "top 86%",
+        once: true,
+        batchMax: 1,
+        onEnter: (batch) => {
+          batch.forEach((card) => {
+            const timeline = timelines[cards.indexOf(card as HTMLElement)];
+            timeline?.play();
+          });
+        },
+      });
+    });
+
     mm.add("(min-width: 681px)", () => {
       const directions = [
         { x: -56, y: 34, rotation: -4 },
