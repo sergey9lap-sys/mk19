@@ -36,10 +36,11 @@ export default function CasesSlider({ cases }: CasesSliderProps) {
   };
 
   const renderResult = (text: string) => {
-    const parts = text.split(/((?:\d[\d ]*|[0-9]+,[0-9]+ млн) Р|за месяц)/g);
+    const resultPattern = /((?:\d[\d ]*|[0-9]+,[0-9]+ млн) ?(?:Р|₽|рублей)|за месяц)/g;
+    const parts = text.split(resultPattern);
 
     return parts.map((part, index) =>
-      /(?:\d[\d ]*|[0-9]+,[0-9]+ млн) Р|за месяц/.test(part) ? (
+      /(?:\d[\d ]*|[0-9]+,[0-9]+ млн) ?(?:Р|₽|рублей)|за месяц/.test(part) ? (
         <span className="nowrap" key={`${part}-${index}`}>
           {part}
         </span>
