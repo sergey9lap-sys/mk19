@@ -20,7 +20,7 @@ type TariffsSectionProps = {
 };
 
 function BonusText({ value }: { value: string }) {
-  const amountPattern = /(5 900₽|24 900₽)/g;
+  const amountPattern = /(5 900₽|24 900₽|🎁)/g;
   const parts = value.split(amountPattern);
 
   return (
@@ -28,6 +28,8 @@ function BonusText({ value }: { value: string }) {
       {parts.map((part, index) =>
         part === "5 900₽" || part === "24 900₽" ? (
           <strong className="bonus-amount" key={`${part}-${index}`}>{part}</strong>
+        ) : part === "🎁" ? (
+          <span className="bonus-gift-emoji" aria-hidden="true" key={`${part}-${index}`}>{part}</span>
         ) : (
           <span key={`${part}-${index}`}>{part}</span>
         ),
@@ -78,10 +80,14 @@ export default function TariffsSection({
       </div>
       <div className="bonus-stack" data-stagger>
         {tariffBonuses.map((bonus) => (
-          <article className={`bonus-panel is-${bonus.tone}`} key={bonus.title} data-item>
+          <article
+            className={`bonus-panel is-${bonus.tone} ${bonus.title ? "" : "is-no-title"}`}
+            key={bonus.eyebrow}
+            data-item
+          >
             <i className="bonus-spark" aria-hidden="true" />
-            <span>{bonus.eyebrow}</span>
-            <h3>{bonus.title}</h3>
+            <span><BonusText value={bonus.eyebrow} /></span>
+            {bonus.title ? <h3>{bonus.title}</h3> : null}
             <ul>
               {bonus.items.map((item) => (
                 <li key={item}><BonusText value={item} /></li>

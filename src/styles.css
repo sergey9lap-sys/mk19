@@ -1905,6 +1905,20 @@ h1 {
     linear-gradient(135deg, rgba(209, 158, 124, 0.76), rgba(82, 51, 68, 0.46), rgba(196, 90, 58, 0.4)) border-box;
 }
 
+.bonus-panel.is-no-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.bonus-panel.is-no-title ul {
+  margin-top: clamp(34px, 4.8vw, 72px);
+  gap: clamp(18px, 2vw, 26px);
+}
+
+.bonus-panel.is-no-title .bonus-upgrade {
+  margin-top: auto;
+}
+
 .bonus-spark {
   display: none;
 }
@@ -1939,6 +1953,23 @@ h1 {
     0 12px 28px rgba(63, 36, 42, 0.22),
     inset 0 1px 0 rgba(255, 248, 240, 0.2),
     inset 0 -2px 5px rgba(19, 10, 13, 0.22);
+}
+
+.bonus-gift-emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  font-size: 1.55em;
+  line-height: 1;
+  transform: translateY(-1px);
+  filter: drop-shadow(0 4px 7px rgba(19, 10, 13, 0.22));
+}
+
+.bonus-panel li .bonus-gift-emoji {
+  margin-right: 6px;
+  font-size: 1.45em;
+  vertical-align: -0.12em;
 }
 
 .bonus-panel h3 {
@@ -3514,6 +3545,20 @@ h1 {
       0 0 22px rgba(196, 90, 58, 0.14),
       inset 0 1px 0 rgba(255, 248, 240, 0.22),
       inset 0 -2px 5px rgba(19, 10, 13, 0.22);
+  }
+
+  .bonus-panel.is-no-title ul {
+    margin-top: 34px;
+    gap: 18px;
+  }
+
+  .bonus-panel.is-no-title .bonus-upgrade {
+    margin-top: 34px;
+  }
+
+  .bonus-gift-emoji {
+    margin-right: 7px;
+    font-size: 1.72em;
   }
 
   .bonus-amount {
