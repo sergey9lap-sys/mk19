@@ -1872,6 +1872,10 @@ h1 {
   isolation: isolate;
 }
 
+.bonus-panel:only-child {
+  grid-column: 1 / -1;
+}
+
 .bonus-panel::before {
   content: "";
   position: absolute;
